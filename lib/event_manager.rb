@@ -77,6 +77,7 @@ contents = CSV.open(
 template_letter = File.read('form_letter.erb')
 erb_template = ERB.new template_letter
 hours = []
+days = []
 
 contents.each do |row|
   id = row[0]
@@ -85,16 +86,43 @@ contents.each do |row|
   homephone = clean_homephone(row[:homephone])
   date = parse_date(row[:regdate])
   legislators = legislators_by_zipcode(zipcode)
-
+  day = Date.parse(date.to_s)
   form_letter = erb_template.result(binding)
 
   save_thank_you_letter(id, form_letter)
   #puts homephone
-
+  days.push(day.wday)
   hours.push(date.hour)
 end
 peak_hours = hours.each_with_object(Hash.new(0)) do |hour, result|
   result[hour] += 1
 end
 peak_hours_sorted = peak_hours.sort_by { |_key, value| value }.reverse.to_h
-puts "Hours most people registered: #{peak_hours_sorted.keys[0, 2].join(' and ')}"
+#p peak_hours
+#puts "Hours most people registered: #{peak_hours_sorted.keys[0, 2].join(' and ')}"
+peak_days = days.each_with_object(Hash.new(0)) do |day, result|
+  result[day] += 1
+end
+
+#p peak_days
+a = {}
+peak_days.each do |day, num|
+  case day
+  when 0
+    a['Sunday'] = num
+  when 1
+    a['Monday'] = num
+  when 2
+    a['Tuesday'] = num
+  when 3
+    a['Wednesday'] = num
+  when 4
+    a['Thursday'] = num
+  when 5
+    a['Friday'] = num
+  when 6
+    a['Saturday'] = num
+  end
+end
+
+#p a
