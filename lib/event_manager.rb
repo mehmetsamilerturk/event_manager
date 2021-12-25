@@ -90,7 +90,7 @@ contents.each do |row|
   form_letter = erb_template.result(binding)
 
   save_thank_you_letter(id, form_letter)
-  #puts homephone
+  # puts homephone
   days.push(day.wday)
   hours.push(date.hour)
 end
@@ -98,13 +98,13 @@ peak_hours = hours.each_with_object(Hash.new(0)) do |hour, result|
   result[hour] += 1
 end
 peak_hours_sorted = peak_hours.sort_by { |_key, value| value }.reverse.to_h
-#p peak_hours
-#puts "Hours most people registered: #{peak_hours_sorted.keys[0, 2].join(' and ')}"
+# p peak_hours
+# puts "Hours most people registered: #{peak_hours_sorted.keys[0, 2].join(' and ')}"
 peak_days = days.each_with_object(Hash.new(0)) do |day, result|
   result[day] += 1
 end
 
-#p peak_days
+# p peak_days
 a = {}
 peak_days.each do |day, num|
   case day
@@ -125,4 +125,4 @@ peak_days.each do |day, num|
   end
 end
 
-#p a
+# p a
